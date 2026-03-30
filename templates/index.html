@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Lookup</h1>
+
+    <form action="/weather" method="POST" class="search-form">
+      <input
+        type="text"
+        name="city"
+        placeholder="Enter a city..."
+        autocomplete="off"
+        required
+        {% if weather %}value="{{ weather.city }}"{% endif %}
+      />
+      <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+    <div class="error-card">{{ error }}</div>
+    {% endif %}
+
+    {% if weather %}
+    <div class="weather-card">
+      <div class="weather-header">
+        <h2>{{ weather.city }}, {{ weather.country }}</h2>
+      </div>
+      <div class="weather-body">
+        <div class="weather-icon">
+          <img
+            src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png"
+            alt="{{ weather.description }}"
+          />
+        </div>
+        <div class="weather-temp">
+          <span class="temp">{{ weather.temp }}&deg;F</span>
+          <span class="description">{{ weather.description }}</span>
+          <span class="feels-like">Feels like {{ weather.feels_like }}&deg;F</span>
+        </div>
+      </div>
+      <div class="weather-details">
+        <div class="detail">
+          <span class="label">Humidity</span>
+          <span class="value">{{ weather.humidity }}%</span>
+        </div>
+        <div class="detail">
+          <span class="label">Wind</span>
+          <span class="value">{{ weather.wind }} mph</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
